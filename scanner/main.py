@@ -10,7 +10,14 @@ import requests
 import yaml
 
 from scanner import report
-from scanner.collectors import CollectorUnavailable, edgar, prices, reddit, stocktwits
+from scanner.collectors import (
+    CollectorUnavailable,
+    edgar,
+    prices,
+    reddit,
+    stocktwits,
+    yahoo_trending,
+)
 from scanner.pipeline import quality, scoring
 from scanner.pipeline import tickers as ticker_pipeline
 
@@ -43,12 +50,21 @@ def main(argv=None):
 
     trending = set()
     try:
-        trending = stocktwits.collect(config)
+        trending |= stocktwits.collect(config)
         sources["stocktwits"] = "ok"
         log.info("stocktwits: %d trending symbols", len(trending))
     except CollectorUnavailable as exc:
         log.warning("stocktwits unavailable: %s", exc)
         sources["stocktwits"] = "failed"
+
+    try:
+        yahoo_symbols = yahoo_trending.collect(config)
+        trending |= yahoo_symbols
+        sources["yahoo_trending"] = "ok"
+        log.info("yahoo trending: %d symbols", len(yahoo_symbols))
+    except CollectorUnavailable as exc:
+        log.warning("yahoo trending unavailable: %s", exc)
+        sources["yahoo_trending"] = "failed"
 
     if all(state == "failed" for state in sources.values()):
         log.error("every mention source failed; aborting so the workflow alerts")

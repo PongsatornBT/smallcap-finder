@@ -84,7 +84,7 @@ function renderCard(entry) {
   const tags = el("div", "tags");
   for (const tag of entry.tags.passed) tags.appendChild(el("span", "tag pass", tag));
   for (const tag of entry.tags.failed) tags.appendChild(el("span", "tag fail", tag));
-  if (entry.trending) tags.appendChild(el("span", "tag warn", "StockTwits trending"));
+  if (entry.trending) tags.appendChild(el("span", "tag warn", "trending now"));
   if (entry.short_history) tags.appendChild(el("span", "tag warn", "short history"));
   card.appendChild(tags);
 

@@ -50,7 +50,8 @@ No server. No database. History accumulates as JSON files in git.
 | Source | What it provides | Access | Reliability notes |
 |---|---|---|---|
 | Reddit API | Posts + comments, last 24h, from r/pennystocks, r/smallstreetbets, r/wallstreetbets, r/stocks (configurable) | Free script-app OAuth (client id + secret as GitHub secrets) | Official free tier, 100 req/min — ample |
-| StockTwits API | Trending tickers list | Public endpoint, no auth | May throttle; treated as optional bonus signal |
+| StockTwits API | Trending tickers list | Public endpoint, no auth | Blocks cloud/datacenter IPs (403 from GitHub Actions); works in local runs; optional bonus signal |
+| Yahoo trending | US trending tickers list | Public endpoint, no auth | Reachable from CI; merged with StockTwits as the trending signal |
 | SEC EDGAR | Official ticker list (`company_tickers.json`), company financials (`companyfacts`) | Free official API, requires User-Agent header with contact email | Official and stable |
 | Yahoo Finance (via `yfinance`) | Market cap, price, average volume, exchange, sector | Free unofficial library | Occasionally breaks when Yahoo changes; Stooq is the price fallback |
 | Stooq | Daily prices (fallback) | Free CSV endpoint | Fallback only |

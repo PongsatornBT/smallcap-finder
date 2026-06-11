@@ -16,7 +16,8 @@ Full design: [docs/superpowers/specs/2026-06-11-smallcap-finder-design.md](docs/
 Every day at 12:30 UTC a GitHub Actions workflow:
 
 1. **Collects** the last 24h of posts/comments from r/pennystocks,
-   r/smallstreetbets, r/wallstreetbets, r/stocks + StockTwits trending list.
+   r/smallstreetbets, r/wallstreetbets, r/stocks + trending-ticker lists from
+   StockTwits (local runs; it blocks cloud IPs) and Yahoo Finance.
 2. **Extracts tickers**, validated against the SEC's official ticker list
    (so words like "CEO" don't count).
 3. **Scores buzz**: unique people talking today ÷ that ticker's own 30-day
