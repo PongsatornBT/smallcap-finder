@@ -1,0 +1,17 @@
+{
+  "Revenues": {
+    "units": {
+      "USD": [
+        {"start": "2023-01-01", "end": "2023-12-31", "val": 40000000, "form": "10-K"},
+        {"start": "2025-01-01", "end": "2025-03-31", "val": 9000000, "form": "10-Q"}
+      ]
+    }
+  },
+  "RevenueFromContractWithCustomerExcludingAssessedTax": {
+    "units": {
+      "USD": [
+        {"start": "2024-01-01", "end": "2024-12-31", "val": 58000000, "form": "10-K"}
+      ]
+    }
+  }
+}

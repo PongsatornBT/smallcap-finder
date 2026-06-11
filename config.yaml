@@ -1,0 +1,89 @@
+# All knobs for the daily scan live here. Edit values, commit, done.
+
+# Used in the User-Agent header for SEC EDGAR requests (they require a contact).
+contact_email: pongsatorn.boontham@gmail.com
+
+subreddits:
+  - pennystocks
+  - smallstreetbets
+  - wallstreetbets
+  - stocks
+
+reddit:
+  posts_per_subreddit: 150      # newest posts to scan (stops early at the 24h cutoff)
+  comments_per_subreddit: 300   # newest comments to scan per subreddit
+
+# Buzz scoring
+min_unique_authors: 5     # fewer distinct people than this = noise, ignored
+baseline_floor: 0.5       # minimum 30-day baseline; makes brand-new tickers rank highest
+trending_bonus: 1.2       # score multiplier when on the StockTwits trending list
+top_n: 30                 # how many top-buzz tickers go through the quality gate
+history_days: 90          # rolling history retention
+short_history_days: 14    # below this many days of history, results get a "short history" note
+spark_days: 7             # length of the sparkline on the dashboard
+sample_posts_per_ticker: 3
+
+quality:
+  market_cap_min: 50000000        # $50M
+  market_cap_max: 2000000000      # $2B
+  min_price: 1.0                  # dollars
+  min_dollar_volume: 200000       # 30-day average daily dollar volume
+  min_revenue: 1000000            # latest annual revenue per SEC EDGAR
+  allowed_exchanges: [NYSE, NASDAQ, AMEX]
+
+# Symbols that are also common words / slang. They only count when written
+# as a cashtag ($CEO), never as a bare word. Symbols of 1-2 letters always
+# require a cashtag regardless of this list.
+cashtag_only_max_len: 2
+ticker_blocklist:
+  - ALL
+  - ANY
+  - ARE
+  - BIG
+  - CAN
+  - CASH
+  - CEO
+  - COST
+  - EAT
+  - EDIT
+  - FAST
+  - FOR
+  - FUN
+  - GAIN
+  - GOOD
+  - HAS
+  - HOPE
+  - HUGE
+  - IMO
+  - IPO
+  - JOB
+  - LAND
+  - LIFE
+  - LOVE
+  - LOW
+  - MAIN
+  - MOON
+  - NEW
+  - NEXT
+  - NICE
+  - NOW
+  - ONE
+  - OPEN
+  - OUT
+  - PLAY
+  - PUMP
+  - REAL
+  - RUN
+  - SAFE
+  - SEE
+  - TECH
+  - TELL
+  - TOP
+  - TREE
+  - TRIP
+  - TWO
+  - USA
+  - VERY
+  - WELL
+  - WOW
+  - YOLO
