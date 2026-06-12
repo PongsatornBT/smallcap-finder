@@ -77,7 +77,9 @@ def main(argv=None):
         log.error("EDGAR ticker directory unavailable, cannot validate symbols: %s", exc)
         return 1
 
-    by_ticker = ticker_pipeline.group_mentions(mentions, directory, config)
+    name_lookup = ticker_pipeline.build_name_lookup(directory, config)
+    log.info("company-name phrases known: %d", sum(len(v) for v in name_lookup.values()))
+    by_ticker = ticker_pipeline.group_mentions(mentions, directory, config, name_lookup)
     log.info("tickers mentioned: %d", len(by_ticker))
 
     history_path = ROOT / "data" / "history.json"

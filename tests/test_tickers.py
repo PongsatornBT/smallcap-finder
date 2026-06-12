@@ -1,4 +1,10 @@
-from scanner.pipeline.tickers import extract_tickers, group_mentions
+from scanner.pipeline.tickers import (
+    build_name_lookup,
+    extract_by_name,
+    extract_tickers,
+    group_mentions,
+    name_phrase,
+)
 
 DIRECTORY = {"QNTM": {}, "HLXH": {}, "IT": {}, "AB": {}, "CEO": {}}
 BLOCKLIST = {"CEO"}
@@ -70,3 +76,57 @@ def test_group_mentions_counts_and_dedupes_authors():
     assert entry["mentions"] == 4
     assert entry["authors"] == {"alice", "bob"}
     assert len(entry["posts"]) == 2
+
+
+NAME_DIRECTORY = {
+    "SPCE": {"name": "Virgin Galactic Holdings, Inc"},
+    "AAPL": {"name": "Apple Inc."},
+    "RKLB": {"name": "Rocket Lab USA, Inc."},
+    "BIG": {"name": "Big Lots, Inc."},
+    "PLTR": {"name": "Palantir Technologies Inc."},
+}
+NAME_CONFIG = {
+    "company_name_matching": True,
+    "ticker_aliases": {"PLTR": ["palantir"], "ZZZZ": ["ghost company"]},
+    "company_name_blocklist": ["big lots"],
+}
+
+
+def test_name_phrase_strips_suffixes():
+    assert name_phrase("Virgin Galactic Holdings, Inc") == ("virgin", "galactic")
+    assert name_phrase("Rocket Lab USA, Inc.") == ("rocket", "lab")
+    assert name_phrase("The Trade Desk, Inc.") == ("trade", "desk")
+
+
+def test_company_name_matches():
+    lookup = build_name_lookup(NAME_DIRECTORY, NAME_CONFIG)
+    assert extract_by_name("Virgin Galactic flies again!", lookup) == {"SPCE"}
+    assert extract_by_name("ROCKET LAB launch today", lookup) == {"RKLB"}
+
+
+def test_single_word_names_not_auto_learned():
+    lookup = build_name_lookup(NAME_DIRECTORY, NAME_CONFIG)
+    assert extract_by_name("I ate an apple today", lookup) == set()
+
+
+def test_alias_matches_and_unknown_alias_ignored():
+    lookup = build_name_lookup(NAME_DIRECTORY, NAME_CONFIG)
+    assert extract_by_name("palantir keeps winning contracts", lookup) == {"PLTR"}
+    assert extract_by_name("ghost company is back", lookup) == set()
+
+
+def test_blocklisted_name_never_matches():
+    lookup = build_name_lookup(NAME_DIRECTORY, NAME_CONFIG)
+    assert extract_by_name("big lots of gains this week", lookup) == set()
+
+
+def test_partial_name_does_not_match():
+    lookup = build_name_lookup(NAME_DIRECTORY, NAME_CONFIG)
+    assert extract_by_name("virgin islands vacation", lookup) == set()
+
+
+def test_group_mentions_includes_name_matches():
+    lookup = build_name_lookup(NAME_DIRECTORY, NAME_CONFIG)
+    mentions = [_mention("carol", "Virgin Galactic just announced a new flight")]
+    grouped = group_mentions(mentions, NAME_DIRECTORY, CONFIG, lookup)
+    assert grouped["SPCE"]["authors"] == {"carol"}

@@ -31,6 +31,28 @@ quality:
   min_revenue: 1000000            # latest annual revenue per SEC EDGAR
   allowed_exchanges: [NYSE, NASDAQ, AMEX]
 
+# --- Company-name recognition -------------------------------------------
+# Besides ticker symbols, posts that mention a company BY NAME also count.
+# Multi-word names are learned automatically from the official SEC company
+# list ("Virgin Galactic Holdings, Inc" -> "virgin galactic" -> SPCE), so
+# all ~10,000 listed firms are covered without any setup.
+company_name_matching: true
+
+# One-word nicknames are never auto-learned (too risky: "apple", "target").
+# Add the ones you care about here yourself: TICKER: [list of names].
+# Matching is case-insensitive, whole words only.
+ticker_aliases:
+  PLTR: ["palantir"]
+  IONQ: ["ionq"]
+  JOBY: ["joby"]
+  OKLO: ["oklo"]
+  RKLB: ["rocketlab"]
+
+# Auto-learned name phrases that cause false alarms in normal sentences.
+# Anything listed here is never matched as a company name.
+company_name_blocklist:
+  - "big lots"
+
 # Symbols that are also common words / slang. They only count when written
 # as a cashtag ($CEO), never as a bare word. Symbols of 1-2 letters always
 # require a cashtag regardless of this list.

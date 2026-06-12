@@ -67,6 +67,7 @@ No server. No database. History accumulates as JSON files in git.
 - Match `$TICKER` cashtags and bare uppercase symbols (2–5 letters) in post titles, bodies, and comments.
 - A symbol counts only if it appears in the SEC official ticker list.
 - Bare symbols of 1–2 letters, and any symbol on the ambiguity blocklist (common words that are also tickers: `A, I, IT, ALL, CEO, DD, AI, EV, OR, ON, BE, GO, ARE, FOR, NOW, ANY, CAN, …` — maintained in config), count **only** when written as a cashtag (`$IT`).
+- **Company names count too.** Multi-word names are auto-derived from the SEC directory by stripping legal suffixes ("Virgin Galactic Holdings, Inc" → "virgin galactic" → SPCE; ~8,000 phrases). One-word nicknames are never auto-learned (too ambiguous: "apple") — they come only from the user-curated `ticker_aliases` map in config. A `company_name_blocklist` in config suppresses auto-learned phrases that false-alarm in normal sentences (e.g. "big lots"). Matching is case-insensitive on whole words.
 - Output: per-ticker mention records with author usernames.
 
 ### Step 3 — Score buzz

@@ -19,7 +19,10 @@ Every day at 12:30 UTC a GitHub Actions workflow:
    r/smallstreetbets, r/wallstreetbets, r/stocks + trending-ticker lists from
    StockTwits (local runs; it blocks cloud IPs) and Yahoo Finance.
 2. **Extracts tickers**, validated against the SEC's official ticker list
-   (so words like "CEO" don't count).
+   (so words like "CEO" don't count). Company names count too: ~8,000
+   multi-word names are learned automatically from the SEC list ("Virgin
+   Galactic" → SPCE), and you can add one-word nicknames in `config.yaml`
+   under `ticker_aliases` (e.g. "palantir" → PLTR).
 3. **Scores buzz**: unique people talking today ÷ that ticker's own 30-day
    average. Sudden attention on a quiet stock ranks highest.
 4. **Quality-checks** the top 30: market cap $50M–$2B, NYSE/NASDAQ/AMEX listing,
