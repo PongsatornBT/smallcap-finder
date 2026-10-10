@@ -1,0 +1,16 @@
+{
+ "date": "2026-10-10",
+ "scanned_at_utc": "2026-10-10T17:26:13+00:00",
+ "sources": {
+  "reddit": "failed",
+  "stocktwits": "ok",
+  "yahoo_trending": "ok"
+ },
+ "summary": {
+  "tickers_mentioned": 0,
+  "passed": 0,
+  "caution": 0
+ },
+ "picks": [],
+ "caution": []
+}
